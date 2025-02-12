@@ -41,19 +41,19 @@ public class IngameManager : MonoBehaviour
         string prefabPath = "Prefabs/Rocket";
         rocketPrefab = Resources.Load<GameObject>(prefabPath);
         _rocket = Instantiate(rocketPrefab, Vector3.zero, quaternion.identity);
-    }
-
-    private void Start()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        _mapGenerator = this.AddComponent<MapGenerator>();
-
+        
         if (rocketPrefab != null)
         {
             lastXPosition = _rocket.transform.position.x;
             _mapGenerator.GenerateMap(lastXPosition);
         }
         mainCamera = Camera.main.GetComponent<Camera>();
+    }
+
+    private void Start()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        _mapGenerator = this.AddComponent<MapGenerator>();
     }
 
     private void Update()

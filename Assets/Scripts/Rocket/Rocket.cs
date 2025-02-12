@@ -133,7 +133,11 @@ public class Rocket : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Floor") || other.gameObject.CompareTag("Ceiling"))
+        if (other.gameObject.CompareTag("Floor"))
+        {
+            GameManager.Instance._ingameManager.GameEnd();
+        }
+        else if (other.gameObject.CompareTag("Ceiling"))
         {
             _canRocketRotate = true;
         }
