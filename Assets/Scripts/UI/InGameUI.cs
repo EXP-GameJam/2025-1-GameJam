@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,7 +12,16 @@ public class InGameUI : MonoBehaviour
     [SerializeField] private Image _accelGauge;
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private TextMeshProUGUI _scoreText;
-   
+
+    private void OnEnable()
+    {
+        GameManager.Instance._ingameManager.OnGameEnd += ShowGameOverPanel;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance._ingameManager.OnGameEnd -= ShowGameOverPanel;
+    }
 
     /// <param name="amount"> 0 ~ 1 </param>
     public void SetAccelGaugeFillAmount(float amount)
