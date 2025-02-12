@@ -12,6 +12,8 @@ public class Rocket : MonoBehaviour
     private bool _canRocketRotate= true;
     private float accel;
 
+    [SerializeField] private GameObject explosionPrefab;
+    
     // 게임 속도
     [SerializeField] private float _gameSpeed;
     private float _startTime;
@@ -129,5 +131,25 @@ public class Rocket : MonoBehaviour
         {
             _canRocketRotate = true;
         }
+    }
+
+    public void StartExplosion()
+    {
+        GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        
+        Destroy(explosion, 0.5f);
+        Destroy(gameObject);
+    }
+
+    public void StopRocket()
+    {
+        _rocketBody.simulated = false;
+        enabled = false;
+    }
+
+    public void RestartRocket()
+    {
+        _rocketBody.simulated = true;
+        enabled = true;
     }
 }

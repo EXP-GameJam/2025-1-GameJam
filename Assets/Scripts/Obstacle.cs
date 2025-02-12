@@ -59,4 +59,13 @@ public class Obstacle : MonoBehaviour
 
         this.transform.Rotate(0, 0, randomSpeed * rotateSpeed * Time.deltaTime);
     }
+    
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Rocket"))
+        {
+            GameManager.Instance._ingameManager.GameEnd();
+        }
+        Debug.Log("게임 끝!");
+    }
 }

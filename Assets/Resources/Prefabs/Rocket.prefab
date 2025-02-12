@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6337787260999861247}
   - component: {fileID: 1660344923708625523}
   - component: {fileID: 3745022897722648704}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe359079058a9204eb5e2e9dccc4fe76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rocket: {fileID: 7178714191121348646}
+  _transform: {fileID: 0}
+  explosionPrefab: {fileID: 139366, guid: b185c1a9cf067374586d095111b15bd1, type: 3}
   _gameSpeed: 0
   _startHorizontalSpeed: 1
   _horizontalSpeedWeight: 10

@@ -27,13 +27,16 @@ public class BackGroundLoader : MonoBehaviour
 
     void Update()
     {
-        if (_backGround1.position.x > _backGround2.position.x && _rocket.position.x > _backGround1.position.x)
+        if (_rocket != null)
         {
-            _backGround2.position = _backGround1.position + Vector3.right * _backGroundSize;
-        }
-        else if (_backGround2.position.x > _backGround1.position.x && _rocket.position.x > _backGround2.position.x)
-        {
-            _backGround1.position = _backGround2.position + Vector3.right * _backGroundSize;
+            if (_backGround1.position.x > _backGround2.position.x && _rocket.position.x > _backGround1.position.x)
+            {
+                _backGround2.position = _backGround1.position + Vector3.right * _backGroundSize;
+            }
+            else if (_backGround2.position.x > _backGround1.position.x && _rocket.position.x > _backGround2.position.x)
+            {
+                _backGround1.position = _backGround2.position + Vector3.right * _backGroundSize;
+            }
         }
     }
 }

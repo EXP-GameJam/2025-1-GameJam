@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class IngameManager : MonoBehaviour
 {
@@ -14,8 +15,14 @@ public class IngameManager : MonoBehaviour
     
     [SerializeField]
     private GameObject rocketPrefab;
-
+    
     private GameObject _rocket;
+
+    // Camera Shake
+    public Camera mainCamera;
+    private Vector3 cameraPos;
+    private float duration;
+    private float shakeRange;
 
     private float lastXPosition;
     
@@ -41,6 +48,7 @@ public class IngameManager : MonoBehaviour
             lastXPosition = _rocket.transform.position.x;
             _mapGenerator.GenerateMap(lastXPosition);
         }
+        mainCamera = Camera.main.GetComponent<Camera>();
     }
 
     private void Update()
@@ -60,8 +68,53 @@ public class IngameManager : MonoBehaviour
         }
     }
 
+    public void GameStart()
+    {
+        elapsedTime = 0f;
+        score = 0;
+    }
+
+    public void GameEnd()
+    {
+        _rocket.GetComponent<Rocket>().StopRocket();
+        _rocket.GetComponent<Rocket>().StartExplosion();
+        Shake();
+        // 게임 끝나고 띄우는 UI 보여주던지
+    }
+
+    public void Shake()
+    {
+        shakeRange = 0.05f;
+        duration = 1f;
+        
+        cameraPos = mainCamera.transform.position;
+        InvokeRepeating("StartShake", 0f, 0.005f);
+        Invoke("StopShake", duration);
+    }
+
+    void StartShake()
+    {
+        float cameraPosX = Random.value * shakeRange * 2 - shakeRange;
+        float cameraPosY = Random.value * shakeRange * 2 - shakeRange;
+        Vector3 tcameraPos = mainCamera.transform.position;
+        tcameraPos.x += cameraPosX;
+        tcameraPos.y = cameraPosY;
+        mainCamera.transform.position = tcameraPos;
+    }
+
+    void StopShake()
+    {
+        CancelInvoke("StartShake");
+        mainCamera.transform.position = cameraPos;
+    }
+    
     public GameObject GetRocket()
     {
         return _rocket;
+    }
+
+    public void IncreaseScore()
+    {
+        score++;
     }
 }
