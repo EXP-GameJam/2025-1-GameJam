@@ -15,7 +15,6 @@ public class SliderHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _bgmSlider.onValueChanged += ChangeBgm;
 
     }
 
