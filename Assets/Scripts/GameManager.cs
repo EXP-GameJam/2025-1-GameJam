@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public MicrophoneInputAnalyzer microphoneInputAnalyzer;
-    //public IngameManager ingameManager;
+    public IngameManager _ingameManager;
     
     // Singleton
     private static GameManager instance;
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
         }
         
         microphoneInputAnalyzer = this.AddComponent<MicrophoneInputAnalyzer>();
-        //ingameManager = this.AddComponent<IngameManager>();
+        _ingameManager = this.AddComponent<IngameManager>();
     }
 }
 
