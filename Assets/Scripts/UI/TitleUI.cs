@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class TitleUI : MonoBehaviour
 {
@@ -13,8 +14,6 @@ public class TitleUI : MonoBehaviour
 
     public void StartGame()
     {
-        _correctionUI.StartCorrection(_correctionUI.StartGame);
-        /*
         if (GameManager.Instance.microphoneInputAnalyzer.hasBaseVolume)
         {
             SceneManager.LoadScene("GameScene");
@@ -22,7 +21,7 @@ public class TitleUI : MonoBehaviour
         else
         {
             _correctionUI.StartCorrection(_correctionUI.StartGame);
-        }*/
+        }
     }
 
     public void ShowSelectThemePanel() => _selectThemePanel.SetActive(true);
