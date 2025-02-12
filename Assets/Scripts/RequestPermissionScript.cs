@@ -43,6 +43,6 @@ public class RequestPermissionScript : MonoBehaviour
                 Permission.RequestUserPermission(Permission.Microphone, callbacks);
             }
         }
-    }
 #endif
+    }
 }
