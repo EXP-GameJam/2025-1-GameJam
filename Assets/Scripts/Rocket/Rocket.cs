@@ -5,11 +5,16 @@ using UnityEngine;
 
 public class Rocket : MonoBehaviour
 {
+    [Header("Rocket")]
     [SerializeField] private Transform _rocket;
     private Rigidbody2D _rocketBody;
+    private bool _canRocketRotate= true;
+    private float accel;
 
     // 게임 속도
     [SerializeField] private float _gameSpeed;
+    private float _startTime;
+    private bool _isGameStarted = false;
 
     // 시작 수평 속도
     [SerializeField] private float _startHorizontalSpeed = 1;
@@ -21,8 +26,11 @@ public class Rocket : MonoBehaviour
     [SerializeField] private float _speedWeight = 0.01f;
     [SerializeField] private Transform _camera;
 
+    [Header("Input Volume")]
+    [SerializeField] private MicrophoneInputAnalyzer _analyzer;
 
-    [SerializeField] float _deltaRMS;
+    [SerializeField] private float _sensitivity; // TODO => 슬라이더로 빼기
+    [SerializeField] private float _deltaRMS;
     [SerializeField] private float _RMSConst;
     [SerializeField] private float _threshold;
 
@@ -32,21 +40,86 @@ public class Rocket : MonoBehaviour
         if ( _rocketBody == null ) { _rocketBody = _rocket.AddComponent<Rigidbody2D>(); }
     }
 
-    void FixedUpdate()
+    public void InitRocket()
     {
-        _gameSpeed = _startHorizontalSpeed + Time.time * _speedWeight;
-
-        float accel = (_threshold + _RMSConst * _deltaRMS) * _gameSpeed;
-        float horizontalSpeed = _gameSpeed * _horizontalSpeedWeight;
-
-        _rocket.position += Vector3.right * horizontalSpeed * Time.fixedDeltaTime;
-        _rocketBody.AddForce(Vector2.up * accel, ForceMode2D.Force);
-        _rocket.rotation = Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(_rocketBody.velocity.y, horizontalSpeed) * Mathf.Rad2Deg));
-        _camera.position = _rocket.position + Vector3.back * 10;
+        _threshold = _analyzer.GetNoiseVolume() + _sensitivity;
+        _startTime = Time.time;
+        _isGameStarted = true;
     }
 
-    public void SetRMS(float volume)
+    void FixedUpdate()
     {
-        _deltaRMS = volume;
+        if ( _isGameStarted )
+        {
+            _gameSpeed = _startHorizontalSpeed + (Time.time - _startTime) * _speedWeight;
+            //_deltaRMS = _analyzer.currentVolume;
+
+            accel = (_threshold + _RMSConst * _deltaRMS) * _gameSpeed;
+            float horizontalSpeed = _gameSpeed * _horizontalSpeedWeight;
+
+            _rocket.position += Vector3.right * horizontalSpeed * Time.fixedDeltaTime;
+
+            if (_canRocketRotate)
+            {
+                _rocketBody.AddForce(Vector2.up * accel, ForceMode2D.Force);
+                _rocket.rotation = Quaternion.Euler
+                    (0, 0, Mathf.Atan2(_rocketBody.velocity.y, horizontalSpeed) * Mathf.Rad2Deg);
+            }
+            else
+            {
+                _rocketBody.velocity = Vector2.zero;
+            }
+
+            _camera.position = new Vector3(_rocket.position.x, 0, -10);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        float size = Camera.main.orthographicSize;
+        int sign;
+
+        if (other.gameObject.CompareTag("Floor"))
+        {
+            if (accel <= 9.8)
+            {
+                sign = -1;
+            }
+            else
+            {
+                _canRocketRotate = true;
+                return;
+            }
+        }
+        else if (other.gameObject.CompareTag("Ceiling"))
+        {
+            if (accel >= 9.8)
+            {
+                _rocketBody.gravityScale = 0;
+                sign = 1;
+            }
+            else
+            {
+                _rocketBody.gravityScale = 1;
+                _canRocketRotate = true;
+                return;
+            }
+        }
+        else
+        {
+            return;
+        }
+
+        _rocket.position = new Vector3(_rocket.position.x, size * sign - sign * 1.015f, 0);
+        _rocket.rotation = Quaternion.Euler(0, 0, 0);
+        _canRocketRotate = false;
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Floor") || other.gameObject.CompareTag("Ceiling"))
+        {
+            _canRocketRotate = true;
+        }
     }
 }
