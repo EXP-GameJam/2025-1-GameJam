@@ -39,7 +39,6 @@ public class MapGenerator : MonoBehaviour
 
     public void GenerateMap(float xPos)
     {
-        Debug.Log("!");
         // TODO
         // x 위치가 주어진다. 어느정도 앞 거리에
         // 1. 장애물 생성
@@ -220,7 +219,6 @@ public class MapGenerator : MonoBehaviour
     {
         if (Random.Range(0f, 1f) > 0.5f) return;
         
-        Debug.Log("2");
         GameObject starlink = Instantiate(starlinkPrefab, Vector3.zero, quaternion.identity);
         Vector3 midPoint = Vector3.Lerp(lastPos, nextPos, Random.Range(0.45f, 0.55f));
 
@@ -237,10 +235,6 @@ public class MapGenerator : MonoBehaviour
             {
                 starlink.transform.position = newPosition;
                 break;
-            }
-            else
-            {
-                Debug.Log("뭐에 맞기는 했다!");
             }
             
             tryTemp++;

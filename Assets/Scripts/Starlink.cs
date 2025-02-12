@@ -30,4 +30,13 @@ public class Starlink : MonoBehaviour
         
         transform.position = new Vector3(randomPoint2D.x, randomPoint2D.y, 0f);
     }
+    
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Rocket"))
+        {
+            GameManager.Instance._ingameManager.IncreaseScore();
+            Destroy(gameObject);
+        }
+    }
 }
