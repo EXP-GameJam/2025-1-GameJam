@@ -21,7 +21,18 @@ public class MapGenerator : MonoBehaviour
 
     private const int TOTAL_SPACES = 12;
     private List<int> availableSpaces;
-    
+
+    private void Start()
+    {
+        string prefabPath = "Pefabs/Obstacle";
+        obstaclePrefab = Resources.Load<GameObject>(prefabPath);
+
+        if (obstaclePrefab == null)
+        {
+            Debug.LogError($"프리팹을 로드할 수 없습니다: {prefabPath}");
+        }
+    }
+
     public void GenerateMap(float xPos)
     {
         // TODO
