@@ -9,6 +9,7 @@ public class Rocket : MonoBehaviour
     [Header("Rocket")]
     [SerializeField] private Transform _transform;
     private Rigidbody2D _rocketBody;
+    private Animator anim; 
     private bool _canRocketRotate= true;
     private float accel;
 
@@ -48,6 +49,7 @@ public class Rocket : MonoBehaviour
         _analyzer = GameManager.Instance.microphoneInputAnalyzer;
         _transform = this.transform;
         _camera = Camera.main.GetComponent<Transform>();
+        anim = GetComponent<Animator>();
     }
 
     public void InitRocket()
@@ -82,6 +84,11 @@ public class Rocket : MonoBehaviour
 
             _camera.position = new Vector3(_transform.position.x, 0, -10);
         }
+    }
+
+    private void Update()
+    {
+        anim.SetFloat("Loud", _deltaRMS);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
