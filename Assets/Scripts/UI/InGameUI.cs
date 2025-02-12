@@ -7,29 +7,43 @@ public class InGameUI : MonoBehaviour
 {
     [SerializeField] private Image _accelGauge;
     [SerializeField] private GameObject _gameOverPanel;
-    [SerializeField] private TextMeshProUGUI _scoreText;
+    [SerializeField] private TextMeshProUGUI _currentScoreText;
+    [SerializeField] private TextMeshProUGUI _finalScoreText;
 
-    private void OnEnable()
+    private Rocket _rocket;
+
+    private void Start()
     {
-        GameManager.Instance._ingameManager.OnRMSChanged += SetAccelGaugeFillAmount;
+        _rocket = FindObjectsOfType<Rocket>()[0];
+        GameManager.Instance._ingameManager.OnScoreChanged += UpdateScore;
         GameManager.Instance._ingameManager.OnGameEnd += ShowGameOverPanel;
+    }
+
+    private void Update()
+    {
+        SetAccelGaugeFillAmount(_rocket.Accel);
     }
 
     private void OnDisable()
     {
-        GameManager.Instance._ingameManager.OnRMSChanged -= SetAccelGaugeFillAmount;
         GameManager.Instance._ingameManager.OnGameEnd -= ShowGameOverPanel;
+    }
+
+    private void UpdateScore(int score)
+    {
+        _currentScoreText.text = score.ToString();
     }
 
     public void SetAccelGaugeFillAmount(float amount)
     {
-        _accelGauge.fillAmount = Mathf.Clamp(amount, 0, 0.08f) / 0.08f;
+        float maxAccel = 17 * _rocket.Accel;
+        _accelGauge.fillAmount = Mathf.Clamp(amount, 0, maxAccel) / maxAccel;
     }
 
     public void ShowGameOverPanel(int score)
     {
         _gameOverPanel.SetActive(true);
-        _scoreText.text = "Your Score : " + score.ToString();
+        _finalScoreText.text = "Your Score : " + score.ToString();
     }
 
     public void Retry()

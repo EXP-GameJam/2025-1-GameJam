@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class IngameManager : MonoBehaviour
@@ -33,13 +34,10 @@ public class IngameManager : MonoBehaviour
 
     // Delegate
     public event Action<int> OnScoreChanged;
-    public event Action<float> OnRMSChanged;
     public event Action<int> OnGameEnd;
     
-    private void Awake()
+    private void Init()
     {
-        _mapGenerator = this.AddComponent<MapGenerator>();
-   
         string prefabPath = "Prefabs/Rocket";
         rocketPrefab = Resources.Load<GameObject>(prefabPath);
         _rocket = Instantiate(rocketPrefab, Vector3.zero, quaternion.identity);
@@ -47,6 +45,9 @@ public class IngameManager : MonoBehaviour
 
     private void Start()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        _mapGenerator = this.AddComponent<MapGenerator>();
+
         if (rocketPrefab != null)
         {
             lastXPosition = _rocket.transform.position.x;
@@ -150,11 +151,15 @@ public class IngameManager : MonoBehaviour
                 if (_rocket != null)
                 {
                     _rocket.GetComponent<Rocket>().SetDeltaRMS(RelativeVolume);
-                    OnRMSChanged?.Invoke(RelativeVolume);
                 }
             }
         }
-        
-        
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "GameScene")
+        {
+            Init();
+        }
     }
 }

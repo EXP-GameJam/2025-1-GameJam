@@ -9,11 +9,13 @@ public class Rocket : MonoBehaviour
     private Animator anim; 
     private bool _canRocketRotate= true;
     private float accel;
+    public float Accel => accel;
 
     [SerializeField] private GameObject explosionPrefab;
     
     // 게임 속도
     [SerializeField] private float _gameSpeed;
+    public float GameSpeed => _gameSpeed;
     private float _startTime;
     private bool _isGameStarted = false;
 
@@ -47,6 +49,8 @@ public class Rocket : MonoBehaviour
         _transform = this.transform;
         _camera = Camera.main.GetComponent<Transform>();
         anim = GetComponent<Animator>();
+
+        InitRocket();
     }
 
     public void InitRocket()

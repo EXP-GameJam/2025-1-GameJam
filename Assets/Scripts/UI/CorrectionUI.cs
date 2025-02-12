@@ -77,7 +77,7 @@ public class CorrectionUI : MonoBehaviour
         }
         await Task.Delay(5500 / (gageCnt + 1) + 5500 % (gageCnt + 1));
 
-        endEvent.Invoke();
+        endEvent?.Invoke();
     }
     
     IEnumerator CheckNoise(float duration)
