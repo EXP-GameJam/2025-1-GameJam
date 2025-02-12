@@ -8,10 +8,12 @@ using Random = UnityEngine.Random;
 public class MapGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject obstaclePrefab;
+    [SerializeField] private GameObject starlinkPrefab;
     [SerializeField] private float blankStarlinkSpawnChance;
 
     // 현재 위치 기준으로 얼마나 앞에 장애물을 만들것인가?
     private float frontFront = 40f;
+    private LayerMask obstacleLayer;
 
     [SerializeField] private float earlyPhaseTime = 20f;
     [SerializeField] private float midPhaseTime = 40f;
@@ -24,15 +26,15 @@ public class MapGenerator : MonoBehaviour
     private const int TOTAL_SPACES = 12;
     private List<int> availableSpaces;
 
+    private Vector3 lastStarlinkPosition = Vector3.zero;
+
     private void Awake()
     {
         string prefabPath = "Prefabs/Obstacle";
         obstaclePrefab = Resources.Load<GameObject>(prefabPath);
-
-        if (obstaclePrefab == null)
-        {
-            Debug.LogError($"프리팹을 로드할 수 없습니다: {prefabPath}");
-        }
+        prefabPath = "Prefabs/Starlink";
+        starlinkPrefab = Resources.Load<GameObject>(prefabPath);
+        obstacleLayer = LayerMask.GetMask("Obstacle");
     }
 
     public void GenerateMap(float xPos)
@@ -174,8 +176,16 @@ public class MapGenerator : MonoBehaviour
             firstObstacle.GetComponent<Obstacle>().InitializeObstacle(newFirstSize, firstPos);
             secondObstacle = Instantiate(obstaclePrefab, initPosition, quaternion.identity);
             secondObstacle.GetComponent<Obstacle>().InitializeObstacle(newSecondSize, secondPos);
-            
             ReplaceObstacle(firstObstacle.GetComponent<Obstacle>(), secondObstacle.GetComponent<Obstacle>());
+
+            GameObject starlink = Instantiate(starlinkPrefab, Vector3.zero, quaternion.identity);
+            starlink.GetComponent<Starlink>().InitializeStarlink(firstObstacle.transform.position, secondObstacle.transform.position);
+            
+            if (lastStarlinkPosition != Vector3.zero && Random.Range(0.0f, 1.0f) > 0.5f)
+            {
+                CreateBlankStarlink(lastStarlinkPosition, starlink.transform.position);
+            }
+            lastStarlinkPosition = starlink.transform.position;
         }
         else
         {
@@ -202,6 +212,43 @@ public class MapGenerator : MonoBehaviour
             if (obstacleDist > 1.4f * (obstacleA.ObstacleSize + obstacleB.ObstacleSize))
             {
                 return;
+            }
+        }
+    }
+
+    void CreateBlankStarlink(Vector3 lastPos, Vector3 nextPos)
+    {
+        if (Random.Range(0f, 1f) > 0.5f) return;
+        
+        Debug.Log("2");
+        GameObject starlink = Instantiate(starlinkPrefab, Vector3.zero, quaternion.identity);
+        Vector3 midPoint = Vector3.Lerp(lastPos, nextPos, Random.Range(0.45f, 0.55f));
+
+        int tryTemp = 0;
+        while (true)
+        {
+            float randY = Random.Range(-4.0f, 4.0f);
+
+            Vector3 newPosition = midPoint;
+            newPosition.y = randY;
+            
+            Collider2D hit = Physics2D.OverlapCircle(newPosition, 4.0f, obstacleLayer);
+            if (hit == null)
+            {
+                starlink.transform.position = newPosition;
+                break;
+            }
+            else
+            {
+                Debug.Log("뭐에 맞기는 했다!");
+            }
+            
+            tryTemp++;
+            if (tryTemp > 50) // 무한 루프 방지 (50번 시도 후 강제 종료)
+            {
+                Debug.LogWarning("장애물이 많아 위치를 찾지 못했습니다.");
+                Destroy(starlink);
+                break;
             }
         }
     }
