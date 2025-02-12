@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,7 +10,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private GameObject obstaclePrefab;
     [SerializeField] private float blankStarlinkSpawnChance;
 
-    private float frontFront = 100f;
+    private float frontFront = 1f;
 
     [SerializeField] private float earlyPhaseTime = 20f;
     [SerializeField] private float midPhaseTime = 40f;
@@ -24,17 +25,20 @@ public class MapGenerator : MonoBehaviour
 
     private void Start()
     {
-        string prefabPath = "Pefabs/Obstacle";
+        string prefabPath = "Prefabs/Obstacle";
         obstaclePrefab = Resources.Load<GameObject>(prefabPath);
 
         if (obstaclePrefab == null)
         {
             Debug.LogError($"프리팹을 로드할 수 없습니다: {prefabPath}");
         }
+        
+        GenerateMap(3);
     }
 
     public void GenerateMap(float xPos)
     {
+        Debug.Log("!");
         // TODO
         // x 위치가 주어진다. 어느정도 앞 거리에
         // 1. 장애물 생성
@@ -161,6 +165,21 @@ public class MapGenerator : MonoBehaviour
     void InstantiateObstacle(float xPos, int firstSize, int firstPos, 
         int secondSize, int secondPos, int obstacleNum)
     {
-        
+        Vector3 initPosition = new Vector3(xPos + frontFront, 0, 0);
+        GameObject firstObstacle = null, secondObstacle = null; 
+        if (obstacleNum == 2)
+        {
+            int newFirstSize = Mathf.Max(firstSize, secondSize);
+            int newSecondSize = Mathf.Min(firstSize, secondSize);
+            firstObstacle = Instantiate(obstaclePrefab, initPosition, quaternion.identity);
+            firstObstacle.GetComponent<Obstacle>().InitializeObstacle(newFirstSize, firstPos);
+            secondObstacle = Instantiate(obstaclePrefab, initPosition, quaternion.identity);
+            secondObstacle.GetComponent<Obstacle>().InitializeObstacle(newSecondSize, secondPos);
+        }
+        else
+        {
+            firstObstacle = Instantiate(obstaclePrefab, initPosition, quaternion.identity);
+            firstObstacle.GetComponent<Obstacle>().InitializeObstacle(firstSize, firstPos);
+        }
     }
 }

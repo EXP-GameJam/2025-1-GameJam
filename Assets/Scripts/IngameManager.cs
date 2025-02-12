@@ -44,12 +44,12 @@ public class IngameManager : MonoBehaviour
         gameSpeed = initialSpeed += Time.deltaTime * accelerationWeight;
         elapsedTime += Time.deltaTime;
         
-        float currentXPos = _rocket.transform.position.x;
+        //float currentXPos = _rocket.transform.position.x;
 
-        if (currentXPos - lastXPosition > blankLength)
-        {
-            _mapGenerator.GenerateMap(lastXPosition);
-            lastXPosition = currentXPos;
-        }
+        // if (currentXPos - lastXPosition > blankLength)
+        // {
+        //     _mapGenerator.GenerateMap(lastXPosition);
+        //     lastXPosition = currentXPos;
+        // }
     }
 }

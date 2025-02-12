@@ -6,6 +6,10 @@ public class Obstacle : MonoBehaviour
 
     private CircleCollider2D circleCollider;
     private SpriteRenderer spriteRenderer;
+
+    private float maxY = 4.5f;
+    private float minY = -4.5f;
+    
     private void Awake()
     {
         // 원형 콜리전 추가 및 설정
@@ -24,8 +28,12 @@ public class Obstacle : MonoBehaviour
 
         if (circleCollider != null)
         {
-            circleCollider.radius = obstacleNum * 3f;
+            circleCollider.radius = obstacleNum * (maxY - minY) / 13.0f;
         }
+
+        float obstacleY = minY + ((maxY - minY) / 13.0f) * section;
+
+        this.transform.position = new Vector3(this.transform.position.x, obstacleY, 0);
     }
 
     public void SetSprite(Sprite newSprite)
