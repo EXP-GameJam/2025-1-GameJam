@@ -46,10 +46,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03e1b1e3c2447f941a9d290fdb057841, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleSprite:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  obstacleASprite:
+  - {fileID: 21300000, guid: 6458c61efdcce5e46af82a9878948e83, type: 3}
+  - {fileID: 21300000, guid: 823ece5c6203abc4bae1cd13634e5757, type: 3}
+  obstacleBSprite:
+  - {fileID: 21300000, guid: d38b8f9286217024e93bb86dd73743f0, type: 3}
+  - {fileID: 21300000, guid: de8c0ccbd5c218743ab2b2923c645e67, type: 3}
+  obstacleCSprite:
+  - {fileID: 21300000, guid: ffb62cf18bcc14449bf7cf147f9bba54, type: 3}
+  - {fileID: 21300000, guid: ffb62cf18bcc14449bf7cf147f9bba54, type: 3}
+  rotateSpeed: 2
 --- !u!58 &6642971734805154817
 CircleCollider2D:
   m_ObjectHideFlags: 0

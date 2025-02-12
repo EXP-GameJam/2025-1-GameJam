@@ -9,6 +9,7 @@ public class SoundButtonController : MonoBehaviour
     public Button checkNoiseButton;
     public Button speakButton;
     public Button checkSpeechButton;
+    public Button startButton;
 
     [SerializeField] private MicrophoneInputAnalyzer microphoneAnalyzer;
     
@@ -17,6 +18,7 @@ public class SoundButtonController : MonoBehaviour
         checkNoiseButton.onClick.AddListener(OnCheckNoiseClicked);
         speakButton.onClick.AddListener(OnSpeakButtonClicked);
         checkSpeechButton.onClick.AddListener(OnCheckSpeechButtonClicked);
+        startButton.onClick.AddListener(OnStartButtonClicked);
     }
 
     private void Start()
@@ -98,5 +100,11 @@ public class SoundButtonController : MonoBehaviour
     private void OnSpeakButtonClicked()
     {
         
+    }
+
+    private void OnStartButtonClicked()
+    {
+        GameObject rocket = GameManager.Instance._ingameManager.GetRocket();
+        rocket.GetComponent<Rocket>().InitRocket();
     }
 }

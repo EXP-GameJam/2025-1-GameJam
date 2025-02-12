@@ -10,7 +10,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private GameObject obstaclePrefab;
     [SerializeField] private float blankStarlinkSpawnChance;
 
-    private float frontFront = 1f;
+    // 현재 위치 기준으로 얼마나 앞에 장애물을 만들것인가?
+    private float frontFront = 40f;
 
     [SerializeField] private float earlyPhaseTime = 20f;
     [SerializeField] private float midPhaseTime = 40f;
@@ -23,7 +24,7 @@ public class MapGenerator : MonoBehaviour
     private const int TOTAL_SPACES = 12;
     private List<int> availableSpaces;
 
-    private void Start()
+    private void Awake()
     {
         string prefabPath = "Prefabs/Obstacle";
         obstaclePrefab = Resources.Load<GameObject>(prefabPath);
@@ -32,8 +33,6 @@ public class MapGenerator : MonoBehaviour
         {
             Debug.LogError($"프리팹을 로드할 수 없습니다: {prefabPath}");
         }
-        
-        GenerateMap(3);
     }
 
     public void GenerateMap(float xPos)
@@ -62,24 +61,24 @@ public class MapGenerator : MonoBehaviour
 
     int GetObstacleCount()
     {
-        int obstacleNum = 1;
-        float elapsedTime = GameManager.Instance._ingameManager.elapsedTime;
-        if (elapsedTime < earlyPhaseTime)
-        {
-            obstacleNum = Random.value < 0.5f ? 1 : 2;
-        }
-        else if (elapsedTime < midPhaseTime)
-        {
-            obstacleNum = Random.value < 0.2f ? 1 : 2;
-        }
-        else if (elapsedTime < lastPhaseTime)
-        {
-            obstacleNum = Random.value < 0.05f ? 1 : 2;
-        }
-        else
-        {
-            obstacleNum = 2;
-        }
+        int obstacleNum = 2;
+        // float elapsedTime = GameManager.Instance._ingameManager.elapsedTime;
+        // if (elapsedTime < earlyPhaseTime)
+        // {
+        //     obstacleNum = Random.value < 0.5f ? 1 : 2;
+        // }
+        // else if (elapsedTime < midPhaseTime)
+        // {
+        //     obstacleNum = Random.value < 0.2f ? 1 : 2;
+        // }
+        // else if (elapsedTime < lastPhaseTime)
+        // {
+        //     obstacleNum = Random.value < 0.05f ? 1 : 2;
+        // }
+        // else
+        // {
+        //     obstacleNum = 2;
+        // }
 
         return obstacleNum;
     }
@@ -175,11 +174,35 @@ public class MapGenerator : MonoBehaviour
             firstObstacle.GetComponent<Obstacle>().InitializeObstacle(newFirstSize, firstPos);
             secondObstacle = Instantiate(obstaclePrefab, initPosition, quaternion.identity);
             secondObstacle.GetComponent<Obstacle>().InitializeObstacle(newSecondSize, secondPos);
+            
+            ReplaceObstacle(firstObstacle.GetComponent<Obstacle>(), secondObstacle.GetComponent<Obstacle>());
         }
         else
         {
             firstObstacle = Instantiate(obstaclePrefab, initPosition, quaternion.identity);
             firstObstacle.GetComponent<Obstacle>().InitializeObstacle(firstSize, firstPos);
+        }
+    }
+
+    void ReplaceObstacle(Obstacle obstacleA, Obstacle obstacleB)
+    {
+        Vector3 AOriginPosition = obstacleA.transform.position;
+        Vector3 BOriginPosition = obstacleB.transform.position;
+        
+        while (true)
+        {
+            Vector3 ANewPosition = AOriginPosition;
+            Vector3 BNewPosition = BOriginPosition;
+            ANewPosition.x += Random.Range(-7.0f, 7.0f);
+            BNewPosition.x += Random.Range(-7.0f, 7.0f);
+            obstacleA.transform.position = ANewPosition;
+            obstacleB.transform.position = BNewPosition;
+            
+            float obstacleDist = Vector2.Distance(obstacleA.transform.position, obstacleB.transform.position);
+            if (obstacleDist > 1.4f * (obstacleA.ObstacleSize + obstacleB.ObstacleSize))
+            {
+                return;
+            }
         }
     }
 }

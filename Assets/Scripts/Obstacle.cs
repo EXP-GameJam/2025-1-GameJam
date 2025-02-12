@@ -1,14 +1,22 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Obstacle : MonoBehaviour
 {
-    [SerializeField] private Sprite[] obstacleSprite = new Sprite[3];
+    [SerializeField] private Sprite[] obstacleASprite = new Sprite[2];
+    [SerializeField] private Sprite[] obstacleBSprite = new Sprite[2];
+    [SerializeField] private Sprite[] obstacleCSprite = new Sprite[2];
 
     private CircleCollider2D circleCollider;
     private SpriteRenderer spriteRenderer;
 
+    [SerializeField] private float rotateSpeed = 1f;
+    
     private float maxY = 4.5f;
     private float minY = -4.5f;
+
+    public int ObstacleSize;
     
     private void Awake()
     {
@@ -21,9 +29,13 @@ public class Obstacle : MonoBehaviour
 
     public void InitializeObstacle(int obstacleNum, int section)
     {
+        ObstacleSize = obstacleNum;
+        
         if (spriteRenderer != null)
         {
-            spriteRenderer.sprite = obstacleSprite[obstacleNum - 1];
+            if (obstacleNum == 1) spriteRenderer.sprite = obstacleASprite[Random.Range(0, 2)];
+            if (obstacleNum == 2) spriteRenderer.sprite = obstacleBSprite[Random.Range(0, 2)];
+            if (obstacleNum == 3) spriteRenderer.sprite = obstacleCSprite[Random.Range(0, 2)];
         }
 
         if (circleCollider != null)
@@ -39,5 +51,12 @@ public class Obstacle : MonoBehaviour
     public void SetSprite(Sprite newSprite)
     {
         GetComponent<SpriteRenderer>().sprite = newSprite;
+    }
+
+    private void Update()
+    {
+        int randomSpeed = 20 + Random.Range(0, 20);
+
+        this.transform.Rotate(0, 0, randomSpeed * rotateSpeed * Time.deltaTime);
     }
 }
