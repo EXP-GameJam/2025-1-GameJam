@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -34,6 +35,7 @@ public class IngameManager : MonoBehaviour
 
     // Delegate
     public event Action<int> OnScoreChanged;
+    public event Action<int> OnGameEnd;
     
     private void Awake()
     {
@@ -77,12 +79,14 @@ public class IngameManager : MonoBehaviour
         score = 0;
     }
 
-    public void GameEnd()
+    public async void GameEnd()
     {
         _rocket.GetComponent<Rocket>().StopRocket();
         _rocket.GetComponent<Rocket>().StartExplosion();
         Shake();
-        // 게임 끝나고 띄우는 UI 보여주던지
+
+        await Task.Delay(1500);
+        OnGameEnd?.Invoke(score);
     }
 
     public void Shake()
