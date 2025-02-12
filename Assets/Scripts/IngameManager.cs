@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Mathematics;
 using Unity.VisualScripting;
@@ -35,6 +33,7 @@ public class IngameManager : MonoBehaviour
 
     // Delegate
     public event Action<int> OnScoreChanged;
+    public event Action<float> OnRMSChanged;
     public event Action<int> OnGameEnd;
     
     private void Awake()
@@ -150,7 +149,8 @@ public class IngameManager : MonoBehaviour
             {
                 if (_rocket != null)
                 {
-                    _rocket.GetComponent<Rocket>().SetDeltaRMS(RelativeVolume * 200f);
+                    _rocket.GetComponent<Rocket>().SetDeltaRMS(RelativeVolume);
+                    OnRMSChanged?.Invoke(RelativeVolume);
                 }
             }
         }

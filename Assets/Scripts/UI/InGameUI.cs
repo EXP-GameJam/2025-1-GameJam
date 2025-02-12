@@ -1,8 +1,4 @@
-using JetBrains.Annotations;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,18 +11,19 @@ public class InGameUI : MonoBehaviour
 
     private void OnEnable()
     {
+        GameManager.Instance._ingameManager.OnRMSChanged += SetAccelGaugeFillAmount;
         GameManager.Instance._ingameManager.OnGameEnd += ShowGameOverPanel;
     }
 
     private void OnDisable()
     {
+        GameManager.Instance._ingameManager.OnRMSChanged -= SetAccelGaugeFillAmount;
         GameManager.Instance._ingameManager.OnGameEnd -= ShowGameOverPanel;
     }
 
-    /// <param name="amount"> 0 ~ 1 </param>
     public void SetAccelGaugeFillAmount(float amount)
     {
-        _accelGauge.fillAmount = amount;
+        _accelGauge.fillAmount = Mathf.Clamp(amount, 0, 0.08f) / 0.08f;
     }
 
     public void ShowGameOverPanel(int score)

@@ -110,7 +110,7 @@ MonoBehaviour:
   _analyzer: {fileID: 0}
   _sensitivity: 0
   _deltaRMS: 1
-  _RMSConst: 1
+  _RMSConst: 200
   _threshold: 1
 --- !u!50 &1660344923708625523
 Rigidbody2D:

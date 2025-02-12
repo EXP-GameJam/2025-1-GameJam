@@ -1,7 +1,4 @@
-using System;
 using UnityEngine;
-using System.Linq;
-using System.Numerics;
 
 public class MicrophoneInputAnalyzer : MonoBehaviour
 {

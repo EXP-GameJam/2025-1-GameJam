@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -64,9 +61,8 @@ public class Rocket : MonoBehaviour
         if ( _isGameStarted )
         {
             _gameSpeed = _startHorizontalSpeed + (Time.time - _startTime) * _speedWeight;
-            //_deltaRMS = _analyzer.currentVolume;
 
-            accel = (_threshold + _RMSConst * _deltaRMS) * _gameSpeed;
+            accel = (_threshold + _deltaRMS) * _gameSpeed;
             float horizontalSpeed = _gameSpeed * _horizontalSpeedWeight;
 
             _transform.position += Vector3.right * horizontalSpeed * Time.fixedDeltaTime / 5.0f;
@@ -161,7 +157,7 @@ public class Rocket : MonoBehaviour
 
     public void SetDeltaRMS(float newDeltaRMS)
     {
-        _deltaRMS = newDeltaRMS;
+        _deltaRMS = newDeltaRMS * _RMSConst;
     }
 
     public float GetDeltaRMS()
