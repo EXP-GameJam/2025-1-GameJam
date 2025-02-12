@@ -112,7 +112,7 @@ public class Rocket : MonoBehaviour
         {
             if (accel >= 9.8)
             {
-                _rocketBody.gravityScale = 0;
+                //_rocketBody.gravityScale = 0;
                 sign = 1;
             }
             else
@@ -128,7 +128,6 @@ public class Rocket : MonoBehaviour
         }
 
         _transform.position = new Vector3(_transform.position.x, size * sign - sign * 1.015f, 0);
-        _transform.rotation = Quaternion.Euler(0, 0, 0);
         _canRocketRotate = false;
     }
 
@@ -158,5 +157,15 @@ public class Rocket : MonoBehaviour
     {
         _rocketBody.simulated = true;
         enabled = true;
+    }
+
+    public void SetDeltaRMS(float newDeltaRMS)
+    {
+        _deltaRMS = newDeltaRMS;
+    }
+
+    public float GetDeltaRMS()
+    {
+        return _deltaRMS;
     }
 }
