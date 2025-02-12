@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class SliderHandler : MonoBehaviour
 {
-    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private AudioMixer _audioMixer;
 
     [SerializeField] private Slider _bgmSlider;
     [SerializeField] private Slider _sfxSlider;
@@ -31,21 +31,21 @@ public class SliderHandler : MonoBehaviour
 
     private void ChangeBgm(float value)
     {
-        audioMixer.SetFloat("BGM", GetVolume(value));
+        _audioMixer.SetFloat("BGM", GetVolume(value));
         PlayerPrefs.SetFloat("BGM", value);
         PlayerPrefs.Save();
     }
 
     private void ChangeSfx(float value)
     {
-        audioMixer.SetFloat("SFX", GetVolume(value));
+        _audioMixer.SetFloat("SFX", GetVolume(value));
         PlayerPrefs.SetFloat("SFX", value);
         PlayerPrefs.Save();
     }
 
     private void ChangeSensitivity(float value)
     {
-        audioMixer.SetFloat("Sensitivity", value);
+        _audioMixer.SetFloat("Sensitivity", value);
         PlayerPrefs.SetFloat("Sensitivity", value);
         PlayerPrefs.Save();
     }

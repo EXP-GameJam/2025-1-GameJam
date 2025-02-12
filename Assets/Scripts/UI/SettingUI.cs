@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,11 +6,31 @@ public class SettingUI : MonoBehaviour
     [SerializeField] private CorrectionUI _correctionUI;
 
     [SerializeField] private GameObject _settingPanel;
+    [SerializeField] private GameObject[] _hideElements;
 
 
     public void ShowSettingPanel()
     {
         _settingPanel.SetActive(true);
+
+        foreach (GameObject go in _hideElements)
+        {
+            go.SetActive(false);
+        }
+
+        Time.timeScale = 0;
+    }
+
+    public void CloseSettingPanel()
+    {
+        _settingPanel.SetActive(false);
+
+        foreach (GameObject go in _hideElements)
+        {
+            go.SetActive(true);
+        }
+
+        Time.timeScale = 1;
     }
 
     public void StartCorrection()
@@ -35,10 +53,5 @@ public class SettingUI : MonoBehaviour
     public void GoToTitle()
     {
         SceneManager.LoadScene("TitleScene");
-    }
-
-    public void CloseSettingPanel()
-    {
-        _settingPanel.SetActive(false);
     }
 }
