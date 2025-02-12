@@ -31,7 +31,7 @@ public class InGameUI : MonoBehaviour
 
     private void UpdateScore(int score)
     {
-        _currentScoreText.text = score.ToString();
+        _currentScoreText.text = "score : " + score.ToString();
     }
 
     public void SetAccelGaugeFillAmount(float amount)
@@ -43,7 +43,7 @@ public class InGameUI : MonoBehaviour
     public void ShowGameOverPanel(int score)
     {
         _gameOverPanel.SetActive(true);
-        _finalScoreText.text = "Your Score : " + score.ToString();
+        _finalScoreText.text = score.ToString();
     }
 
     public void Retry()
