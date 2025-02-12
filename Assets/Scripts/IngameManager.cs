@@ -32,6 +32,9 @@ public class IngameManager : MonoBehaviour
 
     private MapGenerator _mapGenerator;
 
+    // Delegate
+    public event Action<int> OnScoreChanged;
+    
     private void Awake()
     {
         _mapGenerator = this.AddComponent<MapGenerator>();
@@ -116,5 +119,6 @@ public class IngameManager : MonoBehaviour
     public void IncreaseScore()
     {
         score++;
+        OnScoreChanged?.Invoke(score);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ public class SoundButtonController : MonoBehaviour
     public Button speakButton;
     public Button checkSpeechButton;
     public Button startButton;
+    public TMP_Text ScoreText;
 
     [SerializeField] private MicrophoneInputAnalyzer microphoneAnalyzer;
     
@@ -24,6 +26,8 @@ public class SoundButtonController : MonoBehaviour
     private void Start()
     {
         microphoneAnalyzer = GameManager.Instance.microphoneInputAnalyzer;
+
+        GameManager.Instance._ingameManager.OnScoreChanged += UpdateScore;
     }
 
     private void OnCheckNoiseClicked()
@@ -95,7 +99,11 @@ public class SoundButtonController : MonoBehaviour
 
         checkSpeechButton.interactable = true;
     }
-    
+
+    private void UpdateScore(int score)
+    {
+        ScoreText.text = $"Score : {score}";
+    }
     
     private void OnSpeakButtonClicked()
     {
