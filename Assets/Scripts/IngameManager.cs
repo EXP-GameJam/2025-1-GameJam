@@ -71,6 +71,8 @@ public class IngameManager : MonoBehaviour
                 _mapGenerator.GenerateMap(lastXPosition);
             } 
         }
+        
+        InputVolume();
     }
 
     public void GameStart()
@@ -124,5 +126,35 @@ public class IngameManager : MonoBehaviour
     {
         score++;
         OnScoreChanged?.Invoke(score);
+    }
+
+    private void InputVolume()
+    {
+        float CurrentVolume = GameManager.Instance.microphoneInputAnalyzer.currentVolume;
+        float NoiseVolume = GameManager.Instance.microphoneInputAnalyzer.GetNoiseVolume();
+        float RelativeVolume = 0f;
+        if (CurrentVolume > NoiseVolume)
+        {
+            RelativeVolume = CurrentVolume - NoiseVolume;
+        }
+        if (GameManager.Instance.microphoneInputAnalyzer.hasNoiseVolume == true)
+        {
+            if (RelativeVolume == 0f)
+            {
+                if (_rocket != null)
+                {
+                    float NextVolume = Mathf.Max(-10f, _rocket.GetComponent<Rocket>().GetDeltaRMS() - 15 * Time.deltaTime);
+                }
+            }
+            else
+            {
+                if (_rocket != null)
+                {
+                    _rocket.GetComponent<Rocket>().SetDeltaRMS(RelativeVolume * 200f);
+                }
+            }
+        }
+        
+        
     }
 }

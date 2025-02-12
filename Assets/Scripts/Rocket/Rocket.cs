@@ -9,6 +9,7 @@ public class Rocket : MonoBehaviour
     [Header("Rocket")]
     [SerializeField] private Transform _transform;
     private Rigidbody2D _rocketBody;
+    private Animator anim; 
     private bool _canRocketRotate= true;
     private float accel;
 
@@ -48,6 +49,7 @@ public class Rocket : MonoBehaviour
         _analyzer = GameManager.Instance.microphoneInputAnalyzer;
         _transform = this.transform;
         _camera = Camera.main.GetComponent<Transform>();
+        anim = GetComponent<Animator>();
     }
 
     public void InitRocket()
@@ -84,6 +86,11 @@ public class Rocket : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        anim.SetFloat("Loud", _deltaRMS);
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         float size = Camera.main.orthographicSize;
@@ -105,7 +112,7 @@ public class Rocket : MonoBehaviour
         {
             if (accel >= 9.8)
             {
-                _rocketBody.gravityScale = 0;
+                //_rocketBody.gravityScale = 0;
                 sign = 1;
             }
             else
@@ -121,7 +128,6 @@ public class Rocket : MonoBehaviour
         }
 
         _transform.position = new Vector3(_transform.position.x, size * sign - sign * 1.015f, 0);
-        _transform.rotation = Quaternion.Euler(0, 0, 0);
         _canRocketRotate = false;
     }
 
@@ -151,5 +157,15 @@ public class Rocket : MonoBehaviour
     {
         _rocketBody.simulated = true;
         enabled = true;
+    }
+
+    public void SetDeltaRMS(float newDeltaRMS)
+    {
+        _deltaRMS = newDeltaRMS;
+    }
+
+    public float GetDeltaRMS()
+    {
+        return _deltaRMS;
     }
 }
