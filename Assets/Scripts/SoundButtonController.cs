@@ -19,6 +19,11 @@ public class SoundButtonController : MonoBehaviour
         checkSpeechButton.onClick.AddListener(OnCheckSpeechButtonClicked);
     }
 
+    private void Start()
+    {
+        microphoneAnalyzer = GameManager.Instance.microphoneInputAnalyzer;
+    }
+
     private void OnCheckNoiseClicked()
     {
         checkNoiseButton.interactable = false;

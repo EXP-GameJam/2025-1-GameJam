@@ -19,7 +19,7 @@ public class MicrophoneInputAnalyzer : MonoBehaviour
     public bool hasBaseVolume = false;
     public bool hasNoiseVolume = false;
     
-    public float currentVolume = 0f;
+    public float currentVolume = 0f;   
     
     void Start()
     {

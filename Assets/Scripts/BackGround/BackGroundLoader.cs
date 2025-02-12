@@ -5,8 +5,6 @@ using UnityEngine;
 public class BackGroundLoader : MonoBehaviour
 {
     [SerializeField] private Transform _rocket;
-
-    // 두 배경의 크기는 같아야 함 => 아님 하나만 놓고 복제해서 쓰는법도 괜찮을듯
     [SerializeField] private Transform _backGround1;
     [SerializeField] private Transform _backGround2;
 
