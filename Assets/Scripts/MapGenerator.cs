@@ -1,15 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class MapGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject obstaclePrefab;
+    [SerializeField] private GameObject starlinkPrefab;
     [SerializeField] private float blankStarlinkSpawnChance;
 
-    private float frontFront = 100f;
+    // 현재 위치 기준으로 얼마나 앞에 장애물을 만들것인가?
+    private float frontFront = 40f;
+    private LayerMask obstacleLayer;
 
     [SerializeField] private float earlyPhaseTime = 20f;
     [SerializeField] private float midPhaseTime = 40f;
@@ -22,19 +26,20 @@ public class MapGenerator : MonoBehaviour
     private const int TOTAL_SPACES = 12;
     private List<int> availableSpaces;
 
-    private void Start()
-    {
-        string prefabPath = "Pefabs/Obstacle";
-        obstaclePrefab = Resources.Load<GameObject>(prefabPath);
+    private Vector3 lastStarlinkPosition = Vector3.zero;
 
-        if (obstaclePrefab == null)
-        {
-            Debug.LogError($"프리팹을 로드할 수 없습니다: {prefabPath}");
-        }
+    private void Awake()
+    {
+        string prefabPath = "Prefabs/Obstacle";
+        obstaclePrefab = Resources.Load<GameObject>(prefabPath);
+        prefabPath = "Prefabs/Starlink";
+        starlinkPrefab = Resources.Load<GameObject>(prefabPath);
+        obstacleLayer = LayerMask.GetMask("Obstacle");
     }
 
     public void GenerateMap(float xPos)
     {
+        Debug.Log("!");
         // TODO
         // x 위치가 주어진다. 어느정도 앞 거리에
         // 1. 장애물 생성
@@ -58,24 +63,24 @@ public class MapGenerator : MonoBehaviour
 
     int GetObstacleCount()
     {
-        int obstacleNum = 1;
-        float elapsedTime = GameManager.Instance._ingameManager.elapsedTime;
-        if (elapsedTime < earlyPhaseTime)
-        {
-            obstacleNum = Random.value < 0.5f ? 1 : 2;
-        }
-        else if (elapsedTime < midPhaseTime)
-        {
-            obstacleNum = Random.value < 0.2f ? 1 : 2;
-        }
-        else if (elapsedTime < lastPhaseTime)
-        {
-            obstacleNum = Random.value < 0.05f ? 1 : 2;
-        }
-        else
-        {
-            obstacleNum = 2;
-        }
+        int obstacleNum = 2;
+        // float elapsedTime = GameManager.Instance._ingameManager.elapsedTime;
+        // if (elapsedTime < earlyPhaseTime)
+        // {
+        //     obstacleNum = Random.value < 0.5f ? 1 : 2;
+        // }
+        // else if (elapsedTime < midPhaseTime)
+        // {
+        //     obstacleNum = Random.value < 0.2f ? 1 : 2;
+        // }
+        // else if (elapsedTime < lastPhaseTime)
+        // {
+        //     obstacleNum = Random.value < 0.05f ? 1 : 2;
+        // }
+        // else
+        // {
+        //     obstacleNum = 2;
+        // }
 
         return obstacleNum;
     }
@@ -161,6 +166,90 @@ public class MapGenerator : MonoBehaviour
     void InstantiateObstacle(float xPos, int firstSize, int firstPos, 
         int secondSize, int secondPos, int obstacleNum)
     {
+        Vector3 initPosition = new Vector3(xPos + frontFront, 0, 0);
+        GameObject firstObstacle = null, secondObstacle = null; 
+        if (obstacleNum == 2)
+        {
+            int newFirstSize = Mathf.Max(firstSize, secondSize);
+            int newSecondSize = Mathf.Min(firstSize, secondSize);
+            firstObstacle = Instantiate(obstaclePrefab, initPosition, quaternion.identity);
+            firstObstacle.GetComponent<Obstacle>().InitializeObstacle(newFirstSize, firstPos);
+            secondObstacle = Instantiate(obstaclePrefab, initPosition, quaternion.identity);
+            secondObstacle.GetComponent<Obstacle>().InitializeObstacle(newSecondSize, secondPos);
+            ReplaceObstacle(firstObstacle.GetComponent<Obstacle>(), secondObstacle.GetComponent<Obstacle>());
+
+            GameObject starlink = Instantiate(starlinkPrefab, Vector3.zero, quaternion.identity);
+            starlink.GetComponent<Starlink>().InitializeStarlink(firstObstacle.transform.position, secondObstacle.transform.position);
+            
+            if (lastStarlinkPosition != Vector3.zero && Random.Range(0.0f, 1.0f) > 0.5f)
+            {
+                CreateBlankStarlink(lastStarlinkPosition, starlink.transform.position);
+            }
+            lastStarlinkPosition = starlink.transform.position;
+        }
+        else
+        {
+            firstObstacle = Instantiate(obstaclePrefab, initPosition, quaternion.identity);
+            firstObstacle.GetComponent<Obstacle>().InitializeObstacle(firstSize, firstPos);
+        }
+    }
+
+    void ReplaceObstacle(Obstacle obstacleA, Obstacle obstacleB)
+    {
+        Vector3 AOriginPosition = obstacleA.transform.position;
+        Vector3 BOriginPosition = obstacleB.transform.position;
         
+        while (true)
+        {
+            Vector3 ANewPosition = AOriginPosition;
+            Vector3 BNewPosition = BOriginPosition;
+            ANewPosition.x += Random.Range(-7.0f, 7.0f);
+            BNewPosition.x += Random.Range(-7.0f, 7.0f);
+            obstacleA.transform.position = ANewPosition;
+            obstacleB.transform.position = BNewPosition;
+            
+            float obstacleDist = Vector2.Distance(obstacleA.transform.position, obstacleB.transform.position);
+            if (obstacleDist > 1.4f * (obstacleA.ObstacleSize + obstacleB.ObstacleSize))
+            {
+                return;
+            }
+        }
+    }
+
+    void CreateBlankStarlink(Vector3 lastPos, Vector3 nextPos)
+    {
+        if (Random.Range(0f, 1f) > 0.5f) return;
+        
+        Debug.Log("2");
+        GameObject starlink = Instantiate(starlinkPrefab, Vector3.zero, quaternion.identity);
+        Vector3 midPoint = Vector3.Lerp(lastPos, nextPos, Random.Range(0.45f, 0.55f));
+
+        int tryTemp = 0;
+        while (true)
+        {
+            float randY = Random.Range(-4.0f, 4.0f);
+
+            Vector3 newPosition = midPoint;
+            newPosition.y = randY;
+            
+            Collider2D hit = Physics2D.OverlapCircle(newPosition, 4.0f, obstacleLayer);
+            if (hit == null)
+            {
+                starlink.transform.position = newPosition;
+                break;
+            }
+            else
+            {
+                Debug.Log("뭐에 맞기는 했다!");
+            }
+            
+            tryTemp++;
+            if (tryTemp > 50) // 무한 루프 방지 (50번 시도 후 강제 종료)
+            {
+                Debug.LogWarning("장애물이 많아 위치를 찾지 못했습니다.");
+                Destroy(starlink);
+                break;
+            }
+        }
     }
 }

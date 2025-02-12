@@ -530,7 +530,8 @@ MonoBehaviour:
   checkNoiseButton: {fileID: 1306578586}
   speakButton: {fileID: 51261777}
   checkSpeechButton: {fileID: 330766621}
-  microphoneAnalyzer: {fileID: 2000867553}
+  startButton: {fileID: 1687463836}
+  microphoneAnalyzer: {fileID: 0}
 --- !u!114 &340668979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -646,7 +647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1253807e51a6c854d8dc977c1627d4ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rocket: {fileID: 1733461871}
+  _rocket: {fileID: 0}
   _backGround1: {fileID: 927297384}
   _backGround2: {fileID: 533423420}
 --- !u!4 &497475888
@@ -1313,6 +1314,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1604266147
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1604266149}
+  - component: {fileID: 1604266148}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1604266148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604266147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5f6a0c49b53963428622d21ade120e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  microphoneInputAnalyzer: {fileID: 0}
+  _ingameManager: {fileID: 0}
+--- !u!4 &1604266149
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604266147}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.23618004, y: -0.40842918, z: -0.100132436}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1655322677
 GameObject:
   m_ObjectHideFlags: 0
@@ -1530,7 +1577,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1733461869}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Rocket, Assembly-CSharp
         m_MethodName: InitRocket
         m_Mode: 1
@@ -1714,22 +1761,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1714701498}
   m_CullTransparentMesh: 1
---- !u!114 &1733461869 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6337787260999861247, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-  m_PrefabInstance: {fileID: 2471621060356762716}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe359079058a9204eb5e2e9dccc4fe76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1733461871 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7178714191121348646, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-  m_PrefabInstance: {fileID: 2471621060356762716}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1787577735
 GameObject:
   m_ObjectHideFlags: 0
@@ -1990,54 +2021,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!1 &2000867552
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2000867554}
-  - component: {fileID: 2000867553}
-  m_Layer: 0
-  m_Name: MicrophoneInputAnalyzer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2000867553
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2000867552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad74b1ef28852e24bb21fa21efa76fb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  microphoneDevice: 
-  hasBaseVolume: 0
-  hasNoiseVolume: 0
-  currentVolume: 0
---- !u!4 &2000867554
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2000867552}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2117610624
 GameObject:
   m_ObjectHideFlags: 0
@@ -2240,71 +2223,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2471621060356762716
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3304456598052988661, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-      propertyPath: m_Name
-      value: Rocket
-      objectReference: {fileID: 0}
-    - target: {fileID: 6337787260999861247, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-      propertyPath: _camera
-      value: 
-      objectReference: {fileID: 1498535509}
-    - target: {fileID: 6337787260999861247, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-      propertyPath: _analyzer
-      value: 
-      objectReference: {fileID: 2000867553}
-    - target: {fileID: 7178714191121348646, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7178714191121348646, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -3.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7178714191121348646, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7178714191121348646, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7178714191121348646, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7178714191121348646, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7178714191121348646, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7178714191121348646, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7178714191121348646, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7178714191121348646, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0cb1f5b81d690c644a4c241a4cd55aa9, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2312,8 +2230,7 @@ SceneRoots:
   - {fileID: 927297384}
   - {fileID: 533423420}
   - {fileID: 1498535509}
-  - {fileID: 2471621060356762716}
   - {fileID: 497475888}
   - {fileID: 340668982}
-  - {fileID: 2000867554}
   - {fileID: 2144934812}
+  - {fileID: 1604266149}

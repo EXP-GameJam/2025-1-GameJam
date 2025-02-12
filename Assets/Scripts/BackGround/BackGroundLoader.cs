@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,15 @@ public class BackGroundLoader : MonoBehaviour
     private void Awake()
     {
         _backGroundSize = _backGround1.localScale.x;
+    }
+
+    private void Start()
+    {
+        _rocket = GameManager.Instance._ingameManager.GetRocket().GetComponent<Transform>();
+        if (_rocket == null)
+        {
+            Debug.Log("로켓 제대로 세팅 안됨!");
+        }
     }
 
     void Update()

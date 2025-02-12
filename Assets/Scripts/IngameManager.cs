@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,12 +15,11 @@ public class IngameManager : MonoBehaviour
     [SerializeField]
     private GameObject rocketPrefab;
 
-    private GameObject startPosition;
     private GameObject _rocket;
 
     private float lastXPosition;
     
-    [SerializeField] private float blankLength;
+    [SerializeField] private float blankLength = 17f;
     [SerializeField] private float initialSpeed = 1f;
     [SerializeField] private float accelerationWeight;
 
@@ -28,28 +28,40 @@ public class IngameManager : MonoBehaviour
     private void Awake()
     {
         _mapGenerator = this.AddComponent<MapGenerator>();
+   
+        string prefabPath = "Prefabs/Rocket";
+        rocketPrefab = Resources.Load<GameObject>(prefabPath);
+        _rocket = Instantiate(rocketPrefab, Vector3.zero, quaternion.identity);
     }
 
     private void Start()
     {
         if (rocketPrefab != null)
         {
-            _rocket = Instantiate(rocketPrefab, startPosition.transform.position, Quaternion.identity);
+            lastXPosition = _rocket.transform.position.x;
+            _mapGenerator.GenerateMap(lastXPosition);
         }
-        lastXPosition = _rocket.transform.position.x;
     }
 
     private void Update()
     {
         gameSpeed = initialSpeed += Time.deltaTime * accelerationWeight;
         elapsedTime += Time.deltaTime;
-        
-        float currentXPos = _rocket.transform.position.x;
 
-        if (currentXPos - lastXPosition > blankLength)
+        if (_rocket != null)
         {
-            _mapGenerator.GenerateMap(lastXPosition);
-            lastXPosition = currentXPos;
+            float currentXPos = _rocket.transform.position.x;
+
+            if (currentXPos - lastXPosition > blankLength)
+            {
+                lastXPosition = currentXPos;
+                _mapGenerator.GenerateMap(lastXPosition);
+            } 
         }
+    }
+
+    public GameObject GetRocket()
+    {
+        return _rocket;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,7 +7,7 @@ using UnityEngine;
 public class Rocket : MonoBehaviour
 {
     [Header("Rocket")]
-    [SerializeField] private Transform _rocket;
+    [SerializeField] private Transform _transform;
     private Rigidbody2D _rocketBody;
     private bool _canRocketRotate= true;
     private float accel;
@@ -36,8 +37,15 @@ public class Rocket : MonoBehaviour
 
     private void Awake()
     {
-        _rocketBody = _rocket.GetComponent<Rigidbody2D>();
-        if ( _rocketBody == null ) { _rocketBody = _rocket.AddComponent<Rigidbody2D>(); }
+        _rocketBody = this.GetComponent<Rigidbody2D>();
+        if ( _rocketBody == null ) { _rocketBody = this.AddComponent<Rigidbody2D>(); }
+    }
+
+    private void Start()
+    {
+        _analyzer = GameManager.Instance.microphoneInputAnalyzer;
+        _transform = this.transform;
+        _camera = Camera.main.GetComponent<Transform>();
     }
 
     public void InitRocket()
@@ -57,12 +65,12 @@ public class Rocket : MonoBehaviour
             accel = (_threshold + _RMSConst * _deltaRMS) * _gameSpeed;
             float horizontalSpeed = _gameSpeed * _horizontalSpeedWeight;
 
-            _rocket.position += Vector3.right * horizontalSpeed * Time.fixedDeltaTime;
+            _transform.position += Vector3.right * horizontalSpeed * Time.fixedDeltaTime / 5.0f;
 
             if (_canRocketRotate)
             {
                 _rocketBody.AddForce(Vector2.up * accel, ForceMode2D.Force);
-                _rocket.rotation = Quaternion.Euler
+                _transform.rotation = Quaternion.Euler
                     (0, 0, Mathf.Atan2(_rocketBody.velocity.y, horizontalSpeed) * Mathf.Rad2Deg);
             }
             else
@@ -70,7 +78,7 @@ public class Rocket : MonoBehaviour
                 _rocketBody.velocity = Vector2.zero;
             }
 
-            _camera.position = new Vector3(_rocket.position.x, 0, -10);
+            _camera.position = new Vector3(_transform.position.x, 0, -10);
         }
     }
 
@@ -110,8 +118,8 @@ public class Rocket : MonoBehaviour
             return;
         }
 
-        _rocket.position = new Vector3(_rocket.position.x, size * sign - sign * 1.015f, 0);
-        _rocket.rotation = Quaternion.Euler(0, 0, 0);
+        _transform.position = new Vector3(_transform.position.x, size * sign - sign * 1.015f, 0);
+        _transform.rotation = Quaternion.Euler(0, 0, 0);
         _canRocketRotate = false;
     }
 
