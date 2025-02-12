@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -65,17 +66,45 @@ public class CorrectionUI : MonoBehaviour
 
         // 보정
         // 보정완료한거 GameManger에게 알리기
+        StartCoroutine(CheckNoise(5f));
 
         int gageCnt = _gaugeBlocks.Length;
 
         for (int i = 0; i < gageCnt; i++)
         {
-            await Task.Delay(5000 / (gageCnt + 1));
+            await Task.Delay(5500 / (gageCnt + 1));
             _gaugeBlocks[i].SetActive(true);
         }
-        await Task.Delay(5000 / (gageCnt + 1) + 5000 % (gageCnt + 1));
+        await Task.Delay(5500 / (gageCnt + 1) + 5500 % (gageCnt + 1));
 
         endEvent.Invoke();
+    }
+    
+    IEnumerator CheckNoise(float duration)
+    {
+        float curTime = 0f;
+        float sumVolume = 0f;
+        int sumCount = 0;
+
+        MicrophoneInputAnalyzer microphoneAnalyzer = GameManager.Instance.microphoneInputAnalyzer;
+        if (microphoneAnalyzer == null)
+        {
+            Debug.Log("microphoneAnalyzer 세팅 안됨!");
+            yield break;
+        }
+        
+        while (curTime < duration)
+        {
+            curTime += Time.deltaTime;
+            sumCount++;
+            sumVolume += microphoneAnalyzer.currentVolume;
+            
+            yield return null;
+        }
+        
+        // 이후 여기에 플레이어가 설정에서 세팅한 값 추가해준다
+        float newNoiseVolume = (sumVolume / sumCount) + 0.04f;
+        microphoneAnalyzer.SetNoiseVolume(newNoiseVolume);
     }
 
     public void StartGame()

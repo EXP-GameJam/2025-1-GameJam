@@ -11,6 +11,8 @@ public class Obstacle : MonoBehaviour
     private CircleCollider2D circleCollider;
     private SpriteRenderer spriteRenderer;
 
+    private bool bGetScored = false;
+
     [SerializeField] private float rotateSpeed = 1f;
     
     private float maxY = 4.5f;
@@ -58,6 +60,20 @@ public class Obstacle : MonoBehaviour
         int randomSpeed = 20 + Random.Range(0, 20);
 
         this.transform.Rotate(0, 0, randomSpeed * rotateSpeed * Time.deltaTime);
+
+        if (!bGetScored)
+        {
+            GameObject rocket = GameManager.Instance._ingameManager.GetRocket();
+            if (rocket != null)
+            {
+                if (rocket.GetComponent<Transform>().position.x >
+                    this.transform.position.x)
+                {
+                    GameManager.Instance._ingameManager.IncreaseScore();
+                    bGetScored = true;
+                }
+            }
+        }
     }
     
     private void OnTriggerEnter2D(Collider2D other)
