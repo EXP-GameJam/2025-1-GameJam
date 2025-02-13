@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MicrophoneInputAnalyzer : MonoBehaviour
@@ -16,8 +17,18 @@ public class MicrophoneInputAnalyzer : MonoBehaviour
     public bool hasBaseVolume = false;
     public bool hasNoiseVolume = false;
     
-    public float currentVolume = 0f;   
-    
+    public float currentVolume = 0f;
+
+    private void Awake()
+    {
+        if (PlayerPrefs.HasKey("SavedNoise"))
+        {
+            hasNoiseVolume = true;
+            noiseVolume = PlayerPrefs.GetFloat("SavedNoise");
+        }
+        
+    }
+
     void Start()
     {
         // 마이크 장치 가져오기
@@ -70,6 +81,7 @@ public class MicrophoneInputAnalyzer : MonoBehaviour
     {
         noiseVolume = newNoiseVolume;
         hasNoiseVolume = true;
+        PlayerPrefs.SetFloat("SavedNoise", newNoiseVolume);
         Debug.Log($"NoiseVolume set to : {noiseVolume}");
     }
 
