@@ -15,6 +15,8 @@ public class CorrectionUI : MonoBehaviour
 
     private GameObject[] _gaugeBlocks;
 
+    private float _sensitivity;
+
     public delegate void CorrectionEndEvent();
 
     private void Awake()
@@ -103,7 +105,7 @@ public class CorrectionUI : MonoBehaviour
         }
         
         // 이후 여기에 플레이어가 설정에서 세팅한 값 추가해준다
-        float newNoiseVolume = (sumVolume / sumCount) + 0.04f;
+        float newNoiseVolume = (sumVolume / sumCount) + 0.04f + _sensitivity;
         microphoneAnalyzer.SetNoiseVolume(newNoiseVolume);
     }
 
@@ -115,5 +117,10 @@ public class CorrectionUI : MonoBehaviour
     public void CloseCorrectionPanel()
     {
         _correctionPanel.SetActive(false);
+    }
+
+    public void SetSensitivity(float amount)
+    {
+        _sensitivity = amount / 50;
     }
 }

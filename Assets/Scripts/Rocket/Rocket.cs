@@ -32,7 +32,6 @@ public class Rocket : MonoBehaviour
     [Header("Input Volume")]
     [SerializeField] private MicrophoneInputAnalyzer _analyzer;
 
-    [SerializeField] private float _sensitivity; // TODO => 슬라이더로 빼기
     [SerializeField] private float _deltaRMS;
     [SerializeField] private float _RMSConst;
     [SerializeField] private float _threshold;
@@ -55,7 +54,7 @@ public class Rocket : MonoBehaviour
 
     public void InitRocket()
     {
-        _threshold = _analyzer.GetNoiseVolume() + _sensitivity;
+        _threshold = _analyzer.GetNoiseVolume();
         _startTime = Time.time;
         _isGameStarted = true;
     }

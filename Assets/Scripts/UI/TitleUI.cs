@@ -14,7 +14,7 @@ public class TitleUI : MonoBehaviour
 
     public void StartGame()
     {
-        if (GameManager.Instance.microphoneInputAnalyzer.hasBaseVolume)
+        if (GameManager.Instance.microphoneInputAnalyzer.hasNoiseVolume)
         {
             SceneManager.LoadScene("GameScene");
         }
@@ -25,8 +25,6 @@ public class TitleUI : MonoBehaviour
     }
 
     public void ShowSelectThemePanel() => _selectThemePanel.SetActive(true);
-
-    public void ShowGameWayPanel() => _gameWayPanel.SetActive(true);
 
     public void ClosePanel()
     {

@@ -10,6 +10,7 @@ public class SliderHandler : MonoBehaviour
     [SerializeField] private Slider _sfxSlider;
     [SerializeField] private Slider _sensitivitySlider;
 
+    [SerializeField] private CorrectionUI _correctionUI;
 
 
     // Start is called before the first frame update
@@ -48,6 +49,8 @@ public class SliderHandler : MonoBehaviour
         _audioMixer.SetFloat("Sensitivity", value);
         PlayerPrefs.SetFloat("Sensitivity", value);
         PlayerPrefs.Save();
+
+        _correctionUI.SetSensitivity(value);
     }
 
     private float GetVolume(float value) => Mathf.Log10(value) * 20;
