@@ -64,7 +64,7 @@ public class Rocket : MonoBehaviour
         if ( _isGameStarted )
         {
             _gameSpeed = _startHorizontalSpeed + (Time.time - _startTime) * _speedWeight;
-
+            
             accel = (_threshold + _deltaRMS) * _gameSpeed;
             float horizontalSpeed = _gameSpeed * _horizontalSpeedWeight;
 
@@ -111,7 +111,7 @@ public class Rocket : MonoBehaviour
         {
             if (accel >= 9.8)
             {
-                //_rocketBody.gravityScale = 0;
+                _rocketBody.gravityScale = 0;
                 sign = 1;
             }
             else
@@ -127,6 +127,7 @@ public class Rocket : MonoBehaviour
         }
 
         _transform.position = new Vector3(_transform.position.x, size * sign - sign * 1.015f, 0);
+        _transform.rotation = Quaternion.Euler(0, 0, 0);
         _canRocketRotate = false;
     }
 

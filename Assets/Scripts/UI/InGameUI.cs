@@ -21,7 +21,7 @@ public class InGameUI : MonoBehaviour
 
     private void Update()
     {
-        SetAccelGaugeFillAmount(_rocket.Accel);
+        SetAccelGaugeFillAmount(_rocket.GetDeltaRMS());
     }
 
     private void OnDisable()
@@ -36,8 +36,8 @@ public class InGameUI : MonoBehaviour
 
     public void SetAccelGaugeFillAmount(float amount)
     {
-        float maxAccel = 17 * _rocket.Accel;
-        _accelGauge.fillAmount = Mathf.Clamp(amount, 0, maxAccel) / maxAccel;
+        _accelGauge.fillAmount = Mathf.Clamp(amount, 0, 14) / 14;
+        Debug.Log($"{Mathf.Clamp(amount, 0, 14) / 14}");
     }
 
     public void ShowGameOverPanel(int score)

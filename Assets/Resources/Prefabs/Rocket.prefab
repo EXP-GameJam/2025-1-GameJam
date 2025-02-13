@@ -109,7 +109,7 @@ MonoBehaviour:
   _camera: {fileID: 0}
   _analyzer: {fileID: 0}
   _sensitivity: 0
-  _deltaRMS: 1
+  _deltaRMS: 0
   _RMSConst: 200
   _threshold: 1
 --- !u!50 &1660344923708625523
