@@ -54,4 +54,11 @@ public class SliderHandler : MonoBehaviour
     }
 
     private float GetVolume(float value) => Mathf.Log10(value) * 20;
+
+    [ContextMenu("Reset Prefs")]
+    public void ResetPrefs()
+    {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+    }
 }

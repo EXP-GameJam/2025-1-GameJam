@@ -29,7 +29,6 @@ public class SettingUI : MonoBehaviour
         {
             go.SetActive(true);
         }
-
         Time.timeScale = 1;
     }
 
@@ -41,8 +40,7 @@ public class SettingUI : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "GameScene")
         {
-            _correctionUI.StartCorrection(_correctionUI.CloseCorrectionPanel);
-            CloseSettingPanel();
+            _correctionUI.StartCorrection(CloseSettingPanel);
         }
         else
         {

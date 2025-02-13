@@ -79,6 +79,7 @@ public class CorrectionUI : MonoBehaviour
         }
         await Task.Delay(5500 / (gageCnt + 1) + 5500 % (gageCnt + 1));
 
+        _correctionPanel.SetActive(false);
         endEvent?.Invoke();
     }
     
@@ -112,11 +113,6 @@ public class CorrectionUI : MonoBehaviour
     public void StartGame()
     {
         SceneManager.LoadScene("GameScene");
-    }
-
-    public void CloseCorrectionPanel()
-    {
-        _correctionPanel.SetActive(false);
     }
 
     public void SetSensitivity(float amount)
