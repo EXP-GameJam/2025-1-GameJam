@@ -139,19 +139,10 @@ public class IngameManager : MonoBehaviour
         }
         if (GameManager.Instance.microphoneInputAnalyzer.hasNoiseVolume == true)
         {
-            if (RelativeVolume == 0f)
+            if (_rocket != null)
             {
-                if (_rocket != null)
-                {
-                    float NextVolume = Mathf.Max(-10f, _rocket.GetComponent<Rocket>().GetDeltaRMS() - 15 * Time.deltaTime);
-                }
-            }
-            else
-            {
-                if (_rocket != null)
-                {
-                    _rocket.GetComponent<Rocket>().SetDeltaRMS(RelativeVolume);
-                }
+                _rocket.GetComponent<Rocket>().SetDeltaRMS(RelativeVolume);
+                float NextVolume = Mathf.Max(-10f, _rocket.GetComponent<Rocket>().GetDeltaRMS() - 15 * Time.deltaTime);
             }
         }
     }

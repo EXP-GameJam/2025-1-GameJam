@@ -65,7 +65,7 @@ public class Rocket : MonoBehaviour
         if ( _isGameStarted )
         {
             _gameSpeed = _startHorizontalSpeed + (Time.time - _startTime) * _speedWeight;
-
+            
             accel = (_threshold + _deltaRMS) * _gameSpeed;
             float horizontalSpeed = _gameSpeed * _horizontalSpeedWeight;
 
