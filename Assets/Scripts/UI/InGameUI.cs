@@ -48,6 +48,7 @@ public class InGameUI : MonoBehaviour
 
     public void Retry()
     {
+        GameManager.Instance._ingameManager.IsGameEnd = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Time.timeScale = 1;
         SoundManager.Instance.PlaySquareButtonSound();

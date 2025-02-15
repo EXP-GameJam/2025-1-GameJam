@@ -12,6 +12,7 @@ public class IngameManager : MonoBehaviour
     public float gameSpeed;
     public float progressDistance;
     public float elapsedTime;
+    public bool IsGameEnd = false;
     
     [SerializeField]
     private GameObject rocketPrefab;

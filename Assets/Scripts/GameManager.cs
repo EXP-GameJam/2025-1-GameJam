@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public MicrophoneInputAnalyzer microphoneInputAnalyzer;
     public IngameManager _ingameManager;
-    
+
     // Singleton
     private static GameManager instance;
     public static GameManager Instance

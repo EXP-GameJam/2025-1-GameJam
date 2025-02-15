@@ -8,7 +8,7 @@ public class Rocket : MonoBehaviour
     private Rigidbody2D _rocketBody;
     private Animator anim; 
     private bool _canRocketRotate= true;
-    private float accel;
+    [SerializeField] private float accel;
     public float Accel => accel;
 
     [SerializeField] private GameObject explosionPrefab;
@@ -90,14 +90,18 @@ public class Rocket : MonoBehaviour
         anim.SetFloat("Loud", _deltaRMS);
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnCollisionStay2D(Collision2D other)
     {
         float size = Camera.main.orthographicSize;
 
         if (other.gameObject.CompareTag("Floor"))
         {
-            GameManager.Instance._ingameManager.GameEnd();
-            SoundManager.Instance.PlayFallSound();
+            if (!GameManager.Instance._ingameManager.IsGameEnd)
+            {
+                GameManager.Instance._ingameManager.IsGameEnd = true;
+                GameManager.Instance._ingameManager.GameEnd();
+                SoundManager.Instance.PlayFallSound();
+            }
         }
         else if (other.gameObject.CompareTag("Ceiling"))
         {
@@ -117,7 +121,7 @@ public class Rocket : MonoBehaviour
             return;
         }
 
-        _transform.position = new Vector3(_transform.position.x, size - 1.015f, 0);
+        _transform.position = new Vector3(_transform.position.x, size - 0.35f, 0);
         _transform.rotation = Quaternion.Euler(0, 0, 0);
         _canRocketRotate = false;
     }
