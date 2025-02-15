@@ -41,6 +41,8 @@ public class GuideUI : MonoBehaviour
         _prevImage.sprite = _prevSpriteOff;
 
         _guidePanel.SetActive(true);
+
+        SoundManager.Instance.PlaySquareButtonSound();
     }
 
     public void ShowNext()
@@ -56,6 +58,8 @@ public class GuideUI : MonoBehaviour
 
         _prevButton.interactable = true;
         _prevImage.sprite = _prevSpriteOn;
+
+        SoundManager.Instance.PlaySmallButtonSound();
     }
 
     public void ShowPrev()
@@ -71,5 +75,7 @@ public class GuideUI : MonoBehaviour
 
         _nextButton.interactable = true;
         _nextImage.sprite = _nextSpriteOn;
+
+        SoundManager.Instance.PlaySmallButtonSound();
     }
 }

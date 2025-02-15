@@ -14,8 +14,11 @@ public class TitleUI : MonoBehaviour
 
     public void StartGame()
     {
+        SoundManager.Instance.PlaySquareButtonSound();
+
         if (GameManager.Instance.microphoneInputAnalyzer.hasNoiseVolume)
         {
+            Time.timeScale = 1;
             SceneManager.LoadScene("GameScene");
         }
         else
@@ -24,11 +27,16 @@ public class TitleUI : MonoBehaviour
         }
     }
 
-    public void ShowSelectThemePanel() => _selectThemePanel.SetActive(true);
+    public void ShowSelectThemePanel()
+    {
+        _selectThemePanel.SetActive(true);
+        SoundManager.Instance.PlaySquareButtonSound();
+    }
 
     public void ClosePanel()
     {
         EventSystem.current.currentSelectedGameObject.transform.parent.gameObject.SetActive(false);
+        SoundManager.Instance.PlaySmallButtonSound();
     }
 
     public void SelectTheme()

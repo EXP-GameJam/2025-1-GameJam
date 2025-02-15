@@ -93,26 +93,17 @@ public class Rocket : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         float size = Camera.main.orthographicSize;
-        int sign;
 
         if (other.gameObject.CompareTag("Floor"))
         {
-            if (accel <= 9.8)
-            {
-                sign = -1;
-            }
-            else
-            {
-                _canRocketRotate = true;
-                return;
-            }
+            GameManager.Instance._ingameManager.GameEnd();
+            SoundManager.Instance.PlayFallSound();
         }
         else if (other.gameObject.CompareTag("Ceiling"))
         {
             if (accel >= 9.8)
             {
                 _rocketBody.gravityScale = 0;
-                sign = 1;
             }
             else
             {
@@ -126,18 +117,14 @@ public class Rocket : MonoBehaviour
             return;
         }
 
-        _transform.position = new Vector3(_transform.position.x, size * sign - sign * 1.015f, 0);
+        _transform.position = new Vector3(_transform.position.x, size - 1.015f, 0);
         _transform.rotation = Quaternion.Euler(0, 0, 0);
         _canRocketRotate = false;
     }
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Floor"))
-        {
-            GameManager.Instance._ingameManager.GameEnd();
-        }
-        else if (other.gameObject.CompareTag("Ceiling"))
+        if (other.gameObject.CompareTag("Ceiling"))
         {
             _canRocketRotate = true;
         }

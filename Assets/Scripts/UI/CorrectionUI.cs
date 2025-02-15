@@ -66,21 +66,20 @@ public class CorrectionUI : MonoBehaviour
             element.SetActive(true);
         }
 
-        // 보정
-        // 보정완료한거 GameManger에게 알리기
+        // 보정 시작
         StartCoroutine(CheckNoise(5f));
 
-        int gageCnt = _gaugeBlocks.Length;
+        int gaugeCnt = _gaugeBlocks.Length;
 
-        for (int i = 0; i < gageCnt; i++)
+        for (int i = 0; i < gaugeCnt; i++)
         {
-            await Task.Delay(5500 / (gageCnt + 1));
+            await Task.Delay(5500 / (gaugeCnt + 1));
             _gaugeBlocks[i].SetActive(true);
         }
-        await Task.Delay(5500 / (gageCnt + 1) + 5500 % (gageCnt + 1));
+        await Task.Delay(5500 / (gaugeCnt + 1) + 5500 % (gaugeCnt + 1));
 
-        _correctionPanel.SetActive(false);
         endEvent?.Invoke();
+        _correctionPanel.SetActive(false);
     }
     
     IEnumerator CheckNoise(float duration)
@@ -98,7 +97,7 @@ public class CorrectionUI : MonoBehaviour
         
         while (curTime < duration)
         {
-            curTime += Time.deltaTime;
+            curTime += Time.unscaledDeltaTime;
             sumCount++;
             sumVolume += microphoneAnalyzer.currentVolume;
             
@@ -112,6 +111,7 @@ public class CorrectionUI : MonoBehaviour
 
     public void StartGame()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene("GameScene");
     }
 

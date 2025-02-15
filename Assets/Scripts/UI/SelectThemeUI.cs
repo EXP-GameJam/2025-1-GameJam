@@ -9,6 +9,8 @@ public class SelectThemeUI : MonoBehaviour
     [SerializeField] private Button _prevButton;
     [SerializeField] private Button _nextButton;
     [SerializeField] float _elementDistance;
+    [SerializeField] float _selectedSizeRate = 1.6f;
+    [SerializeField] bool _isFlip;
 
     [SerializeField] private List<Transform> _selectElements;
 
@@ -25,9 +27,9 @@ public class SelectThemeUI : MonoBehaviour
     {
         InitUI();
 
-        _prevButton.onClick.AddListener(() => SetCurrentSelectAlpha(0.5f));
+        _prevButton.onClick.AddListener(() => SetCurrentSelectScale(1));
         _prevButton.onClick.AddListener(SelectPrev);
-        _nextButton.onClick.AddListener(() => SetCurrentSelectAlpha(0.5f));
+        _nextButton.onClick.AddListener(() => SetCurrentSelectScale(1));
         _nextButton.onClick.AddListener(SelectNext);
     }
 
@@ -36,7 +38,7 @@ public class SelectThemeUI : MonoBehaviour
         _selectElements = new List<Transform>();
         foreach (Transform t in _elementContent)
         {
-            ChangeAlpha(t.GetComponent<Image>(), 0.5f);
+            ChangeScale(t, 1);
             _selectElements.Add(t);
         }
 
@@ -53,6 +55,7 @@ public class SelectThemeUI : MonoBehaviour
         {
             _isElementOne = true;
             _selectElements.Add(Instantiate(_selectElements[0], _elementContent).transform);
+            _selectElements.Add(Instantiate(_selectElements[0], _elementContent).transform);
         }
 
         _selectElements[_currentIdx].localPosition = Vector3.zero;
@@ -61,8 +64,10 @@ public class SelectThemeUI : MonoBehaviour
         for (int i = 0; i < _selectElements.Count - 3; i++)
         {
             // 나머지 요소들은 보이지않게 위로 치우기
-            _selectElements[ClampIndex(_currentIdx + 2 + i)].localPosition = Vector3.up * 200;
+            _selectElements[ClampIndex(_currentIdx + 2 + i)].localPosition = Vector3.up * _elementDistance;
         }
+
+        SetCurrentSelectScale(_selectedSizeRate);
     }
 
     public int GetIndex()
@@ -108,19 +113,18 @@ public class SelectThemeUI : MonoBehaviour
         }
         _elementContent.anchoredPosition = endPos;
 
-        SetCurrentSelectAlpha(1);
+        SetCurrentSelectScale(_selectedSizeRate);
     }
 
-    private void SetCurrentSelectAlpha(float alpha)
+    private void SetCurrentSelectScale(float amount)
     {
-        ChangeAlpha(_selectElements[_currentIdx].GetComponent<Image>(), alpha);
+        Debug.Log("change");
+        ChangeScale(_selectElements[_currentIdx], amount);
     }
 
-    private void ChangeAlpha(Image image, float alpha)
+    private void ChangeScale(Transform transform, float amount)
     {
-        Color color = image.color;
-        color.a = alpha;
-        image.color = color;
+        transform.localScale = new Vector3(((_isFlip) ? -1 : 1) * amount, amount, 1);
     }
 
     private int ClampIndex(int index)

@@ -82,6 +82,7 @@ public class MicrophoneInputAnalyzer : MonoBehaviour
         noiseVolume = newNoiseVolume;
         hasNoiseVolume = true;
         PlayerPrefs.SetFloat("SavedNoise", newNoiseVolume);
+        PlayerPrefs.Save();
         Debug.Log($"NoiseVolume set to : {noiseVolume}");
     }
 

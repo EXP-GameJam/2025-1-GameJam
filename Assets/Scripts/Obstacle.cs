@@ -81,6 +81,7 @@ public class Obstacle : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Rocket"))
         {
             GameManager.Instance._ingameManager.GameEnd();
+            SoundManager.Instance.PlayCrashSound();
         }
         Debug.Log("게임 끝!");
     }

@@ -31,7 +31,7 @@ public class InGameUI : MonoBehaviour
 
     private void UpdateScore(int score)
     {
-        _currentScoreText.text = "score : " + score.ToString();
+        _currentScoreText.text = "00000000".Remove(7 - score / 10) + score.ToString();
     }
 
     public void SetAccelGaugeFillAmount(float amount)
@@ -50,5 +50,6 @@ public class InGameUI : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Time.timeScale = 1;
+        SoundManager.Instance.PlaySquareButtonSound();
     }
 }

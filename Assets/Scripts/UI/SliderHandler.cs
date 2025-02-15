@@ -46,7 +46,6 @@ public class SliderHandler : MonoBehaviour
 
     private void ChangeSensitivity(float value)
     {
-        _audioMixer.SetFloat("Sensitivity", value);
         PlayerPrefs.SetFloat("Sensitivity", value);
         PlayerPrefs.Save();
 
