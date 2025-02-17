@@ -26,6 +26,9 @@ public class IngameManager : MonoBehaviour
     private float shakeRange;
 
     private float lastXPosition;
+
+    // 카메라랑 로켓 사이 거리
+    public float cameraDistance = 4;
     
     [SerializeField] private float blankLength = 17f;
     [SerializeField] private float initialSpeed = 1f;
@@ -41,7 +44,7 @@ public class IngameManager : MonoBehaviour
     {
         string prefabPath = "Prefabs/Rocket";
         rocketPrefab = Resources.Load<GameObject>(prefabPath);
-        _rocket = Instantiate(rocketPrefab, Vector3.zero, quaternion.identity);
+        _rocket = Instantiate(rocketPrefab, Vector3.left * cameraDistance, quaternion.identity);
         
         if (rocketPrefab != null)
         {
@@ -49,6 +52,7 @@ public class IngameManager : MonoBehaviour
             _mapGenerator.GenerateMap(lastXPosition);
         }
         mainCamera = Camera.main.GetComponent<Camera>();
+        GameStart();
     }
 
     private void Start()
@@ -90,6 +94,7 @@ public class IngameManager : MonoBehaviour
 
         await Task.Delay(1500);
         OnGameEnd?.Invoke(score);
+        SoundManager.Instance.PlayGameOverBGM();
     }
 
     public void Shake()

@@ -2905,6 +2905,7 @@ MonoBehaviour:
   _sfxMixer: {fileID: 1782342155018099730, guid: 222a072571ca2cb469c170f9c9a57b13, type: 2}
   _titleClip: {fileID: 8300000, guid: 65c90ceccb9985d41aa8f7b1f7126ba8, type: 3}
   _gameClip: {fileID: 8300000, guid: aa7626406927aa441b35da00453a2d23, type: 3}
+  _gameOverClip: {fileID: 8300000, guid: a3339ce00d7668c4b81ea219cceab6d5, type: 3}
   _sqareButtonClip: {fileID: 8300000, guid: 7d6ac229d18b78046a4198a2dc7a068c, type: 3}
   _smallButtonClip: {fileID: 8300000, guid: be8cf623ada7153409213bd7b5728170, type: 3}
   _volumeClip: {fileID: 8300000, guid: 2a112d1698f258a4c8f571fcf3871b03, type: 3}

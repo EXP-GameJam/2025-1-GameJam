@@ -11,6 +11,7 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] private AudioClip _titleClip;
     [SerializeField] private AudioClip _gameClip;
+    [SerializeField] private AudioClip _gameOverClip;
 
     [SerializeField] private AudioClip _sqareButtonClip;
     [SerializeField] private AudioClip _smallButtonClip;
@@ -89,6 +90,13 @@ public class SoundManager : MonoBehaviour
         {
             _bgmSource.clip = _gameClip;
         }
+        _bgmSource.Play();
+    }
+
+    public void PlayGameOverBGM()
+    {
+        _bgmSource.Stop();
+        _bgmSource.clip = _gameOverClip;
         _bgmSource.Play();
     }
 

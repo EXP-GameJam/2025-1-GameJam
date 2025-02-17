@@ -81,13 +81,26 @@ public class Rocket : MonoBehaviour
                 _rocketBody.velocity = Vector2.zero;
             }
 
-            _camera.position = new Vector3(_transform.position.x, 0, -10);
+            _camera.position = new Vector3(_transform.position.x + GameManager.Instance._ingameManager.cameraDistance, 0, -10);
         }
     }
 
     private void Update()
     {
         anim.SetFloat("Loud", _deltaRMS);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Floor"))
+        {
+            if (!GameManager.Instance._ingameManager.IsGameEnd)
+            {
+                GameManager.Instance._ingameManager.IsGameEnd = true;
+                SoundManager.Instance.PlayFallSound();
+                GameManager.Instance._ingameManager.GameEnd();
+            }
+        }
     }
 
     private void OnCollisionStay2D(Collision2D other)
@@ -98,6 +111,7 @@ public class Rocket : MonoBehaviour
         {
             if (!GameManager.Instance._ingameManager.IsGameEnd)
             {
+                Debug.Log("Ãß¶ô");
                 GameManager.Instance._ingameManager.IsGameEnd = true;
                 GameManager.Instance._ingameManager.GameEnd();
                 SoundManager.Instance.PlayFallSound();
