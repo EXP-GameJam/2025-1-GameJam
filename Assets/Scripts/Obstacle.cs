@@ -42,7 +42,7 @@ public class Obstacle : MonoBehaviour
 
         if (circleCollider != null)
         {
-            circleCollider.radius = obstacleNum * (maxY - minY) / 13.0f;
+            circleCollider.radius = obstacleNum * ((maxY - minY) / 13.0f - 0.1f);
         }
 
         float obstacleY = minY + ((maxY - minY) / 13.0f) * section;

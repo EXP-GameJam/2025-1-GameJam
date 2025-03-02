@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SoundSlider : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IEndDragHandler
+public class SliderInteractHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IEndDragHandler
 {
     public void OnPointerDown(PointerEventData eventData)
     {
